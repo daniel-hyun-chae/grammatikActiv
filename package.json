@@ -23,6 +23,7 @@
     "@trpc/react-query": "10.0.0-rc.4",
     "@trpc/server": "10.0.0-rc.4",
     "aws-sdk": "^2.1258.0",
+    "cuid": "^2.1.8",
     "next": "13.0.2",
     "next-auth": "^4.15.1",
     "react": "18.2.0",

@@ -19,7 +19,7 @@ model Course {
   title String
   edition Int?
   publisher String
-  coverPicture String?
+  coverImageUrl String?
   // units Unit[] 
   @@unique([title, edition, publisher])
 }

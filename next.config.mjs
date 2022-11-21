@@ -7,6 +7,14 @@
 
 /** @type {import("next").NextConfig} */
 const config = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "interactive-learning.s3.amazonaws.com",
+      },
+    ],
+  },
   reactStrictMode: true,
   swcMinify: true,
   i18n: {
