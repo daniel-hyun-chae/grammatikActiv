@@ -15,25 +15,28 @@ export default function Publisher() {
   if (isLoading) return <div>Fetching messages...</div>;
   return (
     <div className="px-5">
-      <div className="flex justify-between">
+      <div className="mb-8 flex justify-between">
         <h1 className="text-2xl">My Publications</h1>
         <NewCourseCreationDialog />
       </div>
-      <div className="grid">
-        <ul>
+      <div>
+        <ul className="grid grid-cols-1 items-center justify-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {courses?.map((course) => {
             return (
               <li key={course.id}>
-                <div>{course.title}</div>
-                <div>{course.publisher}</div>
                 {course.coverImageUrl && (
                   <Image
+                    className="mb-2"
                     src={course.coverImageUrl}
-                    width={300}
-                    height={300}
+                    width={200}
+                    height={200}
                     alt={course.title}
                   />
                 )}
+                <div className="flex flex-col items-center">
+                  <div>{course.title}</div>
+                  <div>{course.publisher}</div>
+                </div>
               </li>
             );
           })}

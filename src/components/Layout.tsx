@@ -9,7 +9,7 @@ import TopNavLink from "./TopNavLink";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="APP w-screen h-screen flex flex-col">
+    <div className="APP flex h-screen w-screen flex-col">
       <div className="TOP-BAR flex w-screen items-center justify-between py-3 px-5">
         <div className="TOP-BAR-LEFT flex	basis-4/12 items-center space-x-5">
           <Bars3Icon className="h-7 w-7" />
@@ -21,9 +21,12 @@ export default function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
         <div className="TOP-BAR-MIDDLE flex basis-4/12 justify-center">
-          <input className="h-8 w-full rounded-full" />
+          <input
+            className="w-full rounded-full px-3 py-2 ring-1 ring-gray-400 focus:outline-0 focus:ring-2"
+            placeholder="Search"
+          />
         </div>
-        <div className="TOP-BAR-RIGHT flex basis-4/12 justify-end items-center space-x-3">
+        <div className="TOP-BAR-RIGHT flex basis-4/12 items-center justify-end space-x-3">
           <nav className="TOP-NAV flex">
             <TopNavLink href="/my-learning" text="My learning" />
             <TopNavLink href="/courses" text="Courses" />
