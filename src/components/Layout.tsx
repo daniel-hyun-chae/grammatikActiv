@@ -9,15 +9,7 @@ import {
   PencilSquareIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 import BottomNavLink from "./BottomNavLink";
 import Link from "next/link";
 
@@ -35,13 +27,6 @@ export default function Layout({
     setDarkMode(!darkMode);
   }
 
-  const [bottomBarHeight, setBottomBarHeight] = useState(0);
-  const bottomBarRef = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => {
-    if (bottomBarRef.current) {
-      setBottomBarHeight(bottomBarRef.current.clientHeight);
-    }
-  }, []);
   return (
     <div
       className={`[APP] flex h-full min-h-full w-full flex-col overflow-hidden text-gray-700 dark:bg-neutral-800 dark:text-gray-200`}
@@ -84,10 +69,8 @@ export default function Layout({
           </div>
         </div>
       </div>
-      <div
-        className={`[CONTENT-CONTAINER] flex w-full flex-1 justify-center overflow-y-auto`}
-      >
-        <div className="[CONTENT] flex max-w-screen-2xl flex-grow">
+      <div className={`[CONTENT-CONTAINER] w-full flex-grow overflow-y-auto`}>
+        <div className="[CONTENT] m-auto flex max-w-screen-2xl flex-grow">
           {/* <div className="[CONTENT-SIDEBAR] hidden lg:visible lg:flex lg:flex-col">
             <nav className="[SIDE-BAR-NAV] flex flex-col">
               <SidebarLink href="/publisher" text="Publisher Home" />
@@ -98,10 +81,7 @@ export default function Layout({
           </main>
         </div>
       </div>
-      <nav
-        ref={bottomBarRef}
-        className="[BOTTOM-BAR-CONTAINER] w-full border-t dark:border-neutral-700 dark:bg-neutral-800 lg:hidden"
-      >
+      <nav className="[BOTTOM-BAR-CONTAINER] w-full border-t dark:border-neutral-700 dark:bg-neutral-800 lg:hidden">
         <ul className="flex justify-around gap-3 py-1 ">
           <BottomNavLink
             href="/my-learning"
