@@ -14,13 +14,13 @@ export default function Publisher() {
   const { data: courses, isLoading } = trpc.course.getAll.useQuery();
   if (isLoading) return <div>Fetching messages...</div>;
   return (
-    <div className="px-5">
+    <div className="p-5">
       <div className="mb-8 flex justify-between">
         <h1 className="text-2xl">My Publications</h1>
         <NewCourseCreationDialog />
       </div>
       <div>
-        <ul className="grid grid-cols-1 items-center justify-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <ul className="grid grid-cols-1 items-center justify-items-center gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {courses?.map((course) => {
             return (
               <li key={course.id}>

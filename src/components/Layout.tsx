@@ -9,7 +9,15 @@ import {
   PencilSquareIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import BottomNavLink from "./BottomNavLink";
 import Link from "next/link";
 
@@ -26,14 +34,24 @@ export default function Layout({
     localStorage.setItem("darkMode", String(!darkMode));
     setDarkMode(!darkMode);
   }
+
+  const [bottomBarHeight, setBottomBarHeight] = useState(0);
+  const bottomBarRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (bottomBarRef.current) {
+      setBottomBarHeight(bottomBarRef.current.clientHeight);
+    }
+  }, []);
   return (
-    <div className="[APP] flex h-screen w-screen flex-col overflow-hidden dark:bg-neutral-800 dark:text-gray-200">
-      <div className="[TOP-BAR-CONTAINER] sticky mb-3 flex w-screen justify-center border-b dark:border-neutral-700">
+    <div
+      className={`[APP] flex h-full min-h-full w-full flex-col overflow-hidden text-gray-700 dark:bg-neutral-800 dark:text-gray-200`}
+    >
+      <div className="[TOP-BAR-CONTAINER] flex w-full justify-center border-b dark:border-neutral-700">
         <div className="[TOP-BAR] flex max-w-screen-2xl flex-grow items-center justify-between p-2">
           <div className="[TOP-BAR-LEFT] flex items-center space-x-5">
             <div className="[TOP-BAR-LEFT-ICON] flex items-center gap-1">
-              <CursorArrowRippleIcon className="h-7 w-7 text-violet-600" />
-              <span className="[TOP-BAR-LEFT-TEXT] font-pathwayGothic text-xl sm:text-xl md:text-xl">
+              <CursorArrowRippleIcon className="h-7 w-7 text-violet-500" />
+              <span className="[TOP-BAR-LEFT-TEXT] font-pathwayGothic text-lg">
                 Interactive Learning
               </span>
             </div>
@@ -57,16 +75,18 @@ export default function Layout({
               className="ml-6 border-gray-500 pl-6 hover:cursor-pointer lg:border-l"
             >
               {darkMode ? (
-                <SunIcon className="h-6 w-6 text-violet-500" />
+                <SunIcon className="h-6 w-6 text-amber-500" />
               ) : (
-                <MoonIcon className="h-5 w-5 text-violet-700" />
+                <MoonIcon className="h-5 w-5 text-amber-500" />
               )}
             </div>
             <UserCircleIcon className="h-7 w-7 text-neutral-800 dark:text-neutral-300" />
           </div>
         </div>
       </div>
-      <div className="[CONTENT-CONTAINER] flex w-full justify-center overflow-y-auto">
+      <div
+        className={`[CONTENT-CONTAINER] flex w-full flex-1 justify-center overflow-y-auto`}
+      >
         <div className="[CONTENT] flex max-w-screen-2xl flex-grow">
           {/* <div className="[CONTENT-SIDEBAR] hidden lg:visible lg:flex lg:flex-col">
             <nav className="[SIDE-BAR-NAV] flex flex-col">
@@ -78,7 +98,10 @@ export default function Layout({
           </main>
         </div>
       </div>
-      <nav className="[BOTTOM-BAR-CONTAINER] w-full border-t dark:border-neutral-700 dark:bg-neutral-800 lg:hidden">
+      <nav
+        ref={bottomBarRef}
+        className="[BOTTOM-BAR-CONTAINER] w-full border-t dark:border-neutral-700 dark:bg-neutral-800 lg:hidden"
+      >
         <ul className="flex justify-around gap-3 py-1 ">
           <BottomNavLink
             href="/my-learning"
