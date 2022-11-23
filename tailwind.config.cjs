@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       fontFamily: {
         titilium: ["Titillium Web"],
+        pathwayGothic: ["Pathway Gothic One", "sans-serif"],
       },
       height: {
         "1/20": "5%",
