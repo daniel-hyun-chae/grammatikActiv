@@ -35,8 +35,8 @@ export default function Layout({
         <div className="[TOP-BAR] flex max-w-screen-2xl flex-grow items-center justify-between p-2">
           <div className="[TOP-BAR-LEFT] flex items-center space-x-5">
             <div className="[TOP-BAR-LEFT-ICON] flex items-center gap-1">
-              <CursorArrowRippleIcon className="h-7 w-7 text-violet-500" />
-              <span className="[TOP-BAR-LEFT-TEXT] font-pathwayGothic text-lg">
+              <CursorArrowRippleIcon className="h-6 w-6 text-cyan-500" />
+              <span className="[TOP-BAR-LEFT-TEXT] text-lg">
                 Interactive Learning
               </span>
             </div>
@@ -70,15 +70,8 @@ export default function Layout({
         </div>
       </div>
       <div className={`[CONTENT-CONTAINER] w-full flex-grow overflow-y-auto`}>
-        <div className="[CONTENT] m-auto flex max-w-screen-2xl flex-grow">
-          {/* <div className="[CONTENT-SIDEBAR] hidden lg:visible lg:flex lg:flex-col">
-            <nav className="[SIDE-BAR-NAV] flex flex-col">
-              <SidebarLink href="/publisher" text="Publisher Home" />
-            </nav>
-          </div> */}
-          <main className="[CONTENT-MAIN] flex-grow overflow-y-auto">
-            {children}
-          </main>
+        <div className="[CONTENT] m-auto flex h-full max-w-screen-2xl flex-grow">
+          <main className="[CONTENT-MAIN] h-full flex-grow">{children}</main>
         </div>
       </div>
       <nav className="[BOTTOM-BAR-CONTAINER] w-full border-t dark:border-neutral-700 dark:bg-neutral-800 lg:hidden">

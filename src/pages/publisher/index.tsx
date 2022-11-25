@@ -1,14 +1,14 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
-import { XMarkIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import * as Label from "@radix-ui/react-label";
 import * as Dialog from "@radix-ui/react-dialog";
 import { trpc } from "../../utils/trpc";
 import ImageUploader from "../../components/ImageUploader";
 import Image from "next/image";
-import { PresignedPost } from "aws-sdk/clients/s3";
 
 import { env } from "../../env/client.mjs";
+import Link from "next/link";
 
 export default function Publisher() {
   const { data: courses, isLoading } = trpc.course.getAll.useQuery();
@@ -20,18 +20,29 @@ export default function Publisher() {
         <NewCourseCreationDialog />
       </div>
       <div>
-        <ul className="grid grid-cols-1 items-center justify-items-center gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <ul className="[COURSE-LIST] grid grid-cols-1 items-center justify-items-center gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {courses?.map((course) => {
             return (
-              <li key={course.id}>
+              <li
+                key={course.id}
+                className="[COURSE] flex flex-col items-center justify-center"
+              >
                 {course.coverImageUrl && (
-                  <Image
-                    className="mb-2"
-                    src={course.coverImageUrl}
-                    width={200}
-                    height={200}
-                    alt={course.title}
-                  />
+                  <div className="relative mb-2">
+                    <Image
+                      src={course.coverImageUrl}
+                      width={200}
+                      height={266}
+                      alt={course.title}
+                    />
+                    <Link
+                      href={`/publisher/courses/${course.id}`}
+                      className="absolute top-0 flex h-full w-full cursor-pointer flex-col items-center justify-center font-semibold text-transparent hover:bg-neutral-700/80 hover:text-neutral-200"
+                    >
+                      <PencilSquareIcon className="h-6 w-6" />
+                      <span>Edit Course</span>
+                    </Link>
+                  </div>
                 )}
                 <div className="flex flex-col items-center">
                   <div>{course.title}</div>
@@ -92,38 +103,13 @@ function NewCourseCreationDialog() {
 
   const postImage = trpc.courseImage.postPresignedPost.useMutation();
 
-  // async function handleFileUpload(file: File) {
-  //   try {
-  //     if (!file) return;
-  //     const imageUrl = postImage.mutateAsync({
-  //       file,
-  //     });
-  //     console.log(imageUrl);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
   async function handleFileUpload(file: File) {
     try {
       const fileName = file.name;
       const fileExtension = fileName.split(".").at(-1) as string;
-      console.log("filename", fileName);
-      console.log("fileExtension", fileExtension);
-
       const preSignedPost = await postImage.mutateAsync({
         fileExtension,
       });
-
-      // const url = await postImage.mutateAsync({
-      //   fileExtension,
-      // });
-
-      // if (url) {
-      //   await fetch(url, {
-      //     method: "PUT",
-      //     body: file,
-      //   });
 
       if (preSignedPost) {
         const coverImageInForm = new FormData();
@@ -158,54 +144,55 @@ function NewCourseCreationDialog() {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-gray-700/30" />
-        <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-5">
-          <Dialog.Title className="mb-2 text-xl font-semibold text-gray-800">
+        <Dialog.Content className="fixed top-1/3 left-1/2 flex w-11/12 max-w-screen-sm -translate-x-1/2 -translate-y-1/2 flex-col rounded bg-white text-gray-700 dark:bg-neutral-600 dark:text-gray-100 lg:top-1/2">
+          <Dialog.Title className="mb-3 border-b px-3 py-2 text-lg font-semibold">
             Create a course
           </Dialog.Title>
-          <Dialog.Description className="mb-3 text-gray-400">
+          <Dialog.Description className="mb-5 px-4">
             Fill in the required information for the course creation and save
             it.
           </Dialog.Description>
           <form
-            className="flex flex-col space-y-5"
+            className="[FORM] flex flex-col px-4 pb-4"
             onSubmit={onSubmitHandler}
-            id="course-create-form"
           >
-            <div className="flex items-center gap-5 text-violet-500">
-              <Label.Root className="w-1/5" htmlFor="title">
-                Course title:
-              </Label.Root>
-              <input
-                className="grow rounded py-2 px-3 ring-1 ring-violet-300 focus:outline-0 focus:ring-2 focus:ring-violet-400"
-                type="text"
-                id="title"
-                placeholder="Enter the course title"
-                value={formData.title}
-                onChange={(e) => {
-                  setFormData({ ...formData, title: e.target.value });
-                }}
-              />
+            <div className="[FORM-CONTENT] mb-4 flex">
+              <div className="[FORM-CONTENT-LEFT] mr-4 flex flex-col justify-center">
+                <ImageUploader
+                  onChange={handleFileUpload}
+                  imageUrl={formData.coverImageUrl || ""}
+                />
+              </div>
+              <div className="[FORM-COTENT-RIGHT] flex min-w-0 grow flex-col justify-evenly">
+                <div className="flex flex-col">
+                  <Label.Root htmlFor="title">Course title</Label.Root>
+                  <input
+                    className="focus:ring-cyan-40 rounded bg-neutral-200 py-2 px-3 ring-1 ring-cyan-300 focus:outline-0 focus:ring-2 dark:bg-neutral-700"
+                    type="text"
+                    id="title"
+                    placeholder="Enter the course title"
+                    value={formData.title}
+                    onChange={(e) => {
+                      setFormData({ ...formData, title: e.target.value });
+                    }}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <Label.Root htmlFor="publisher">Publisher</Label.Root>
+                  <input
+                    className="rounded bg-neutral-200 py-2 px-3 ring-1 ring-cyan-300 focus:outline-0 focus:ring-2 focus:ring-cyan-400 dark:bg-neutral-700"
+                    type="text"
+                    id="publisher"
+                    placeholder="Enter the course publisher"
+                    value={formData.publisher}
+                    onChange={(e) => {
+                      setFormData({ ...formData, publisher: e.target.value });
+                    }}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-5 text-violet-500 ">
-              <Label.Root className="w-1/5" htmlFor="publisher">
-                Publisher:
-              </Label.Root>
-              <input
-                className="grow rounded py-2 px-3 ring-1 ring-violet-300 focus:outline-0 focus:ring-2 focus:ring-violet-400"
-                type="text"
-                id="publisher"
-                placeholder="Enter the course publisher"
-                value={formData.publisher}
-                onChange={(e) => {
-                  setFormData({ ...formData, publisher: e.target.value });
-                }}
-              />
-            </div>
-            <ImageUploader
-              onChange={handleFileUpload}
-              imageUrl={formData.coverImageUrl || ""}
-            />
-            <div className="flex justify-end">
+            <div className="[FORM-SUBMIT] flex justify-end">
               <button
                 type="submit"
                 name="course-create-form"
@@ -218,10 +205,10 @@ function NewCourseCreationDialog() {
           <Dialog.Close asChild>
             <button
               type="button"
-              className="absolute top-4 right-4"
+              className="absolute top-3 right-3"
               aria-label="Close"
             >
-              <XMarkIcon className="h-5 w-5 text-violet-500" />
+              <XMarkIcon className="h-5 w-5" />
             </button>
           </Dialog.Close>
         </Dialog.Content>
