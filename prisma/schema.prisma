@@ -20,20 +20,28 @@ model Course {
   edition Int?
   publisher String
   coverImageUrl String?
-  // units Unit[] 
+  sections Section[]
   @@unique([title, edition, publisher])
 }
 
-// model Unit {
-//   id String @id @default(cuid())
-//   number Int
-//   title String
-//   subTitle String
-//   courseId String
-//   course Course @relation(fields: [courseId], references: [id])
-//   Exercises Exercise[] 
-//   @@unique([courseId, number])
-// }
+model Section {
+  id String @id @default(cuid())
+  title String
+  courseId String
+  course Course @relation(fields: [courseId], references: [id])
+  units Unit[]
+}
+
+model Unit {
+  id String @id @default(cuid())
+  number Int
+  title String
+  subTitle String
+  sectionId String
+  section Section @relation(fields: [sectionId], references: [id])
+  // Exercises Exercise[] 
+  // @@unique([courseId, number])
+}
 
 // model Exercise {
 //   id String @id @default(cuid())
