@@ -26,12 +26,24 @@ export const courseRouter = router({
         console.log(error);
       }
     }),
-  getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.prisma.course.findFirst({
+  getById: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    const course = await ctx.prisma.course.findFirst({
       where: {
         id: input,
       },
+      include: {
+        sections: true,
+      },
     });
+
+    if (course) {
+      course.sections = course.sectionsIdList.map((sectionId) => {
+        return course.sections.find((section) => {
+          return section.id === sectionId;
+        });
+      });
+    }
+    return course;
   }),
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.course.findMany();

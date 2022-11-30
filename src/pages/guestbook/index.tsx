@@ -1,5 +1,4 @@
-import { timeUntilStale } from "@tanstack/query-core/build/lib/utils";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import { trpc } from "../../utils/trpc";

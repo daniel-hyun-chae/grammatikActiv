@@ -15,30 +15,32 @@ datasource db {
 }
 
 model Course {
-  id String @id @default(cuid())
-  title String
-  edition Int?
-  publisher String
-  coverImageUrl String?
-  sections Section[]
+  id             String    @id @default(cuid())
+  title          String
+  edition        Int?
+  publisher      String
+  coverImageUrl  String?
+  sectionsIdList String[]
+  sections       Section[]
+
   @@unique([title, edition, publisher])
 }
 
 model Section {
-  id String @id @default(cuid())
-  title String
+  id       String @id @default(cuid())
+  title    String
   courseId String
-  course Course @relation(fields: [courseId], references: [id])
-  units Unit[]
+  course   Course @relation(fields: [courseId], references: [id])
+  units    Unit[]
 }
 
 model Unit {
-  id String @id @default(cuid())
-  number Int
-  title String
-  subTitle String
+  id        String  @id @default(cuid())
+  number    Int
+  title     String
+  subTitle  String
   sectionId String
-  section Section @relation(fields: [sectionId], references: [id])
+  section   Section @relation(fields: [sectionId], references: [id])
   // Exercises Exercise[] 
   // @@unique([courseId, number])
 }
@@ -80,7 +82,6 @@ model Unit {
 //   exerciseItemId String
 //   exercise ExerciseItem @relation(fields: [exerciseItemId], references: [id])
 // }
-
 
 // model Example {
 //   id        String   @id @default(cuid())
@@ -134,8 +135,8 @@ model VerificationToken {
 }
 
 model Guestbook {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  name String
-  message String @db.VarChar(100)
+  name      String
+  message   String   @db.VarChar(100)
 }

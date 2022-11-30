@@ -3,12 +3,14 @@ import { authRouter } from "./auth";
 import { courseRouter } from "./course";
 import { courseImageRouter } from "./courseImage";
 import { guestbookRouter } from "./guestbook";
+import { sectionRouter } from "./section";
 
 export const appRouter = router({
   guestbook: guestbookRouter,
   course: courseRouter,
   auth: authRouter,
   courseImage: courseImageRouter,
+  section: sectionRouter,
 });
 
 // export type definition of API

@@ -7,6 +7,7 @@ import { trpc } from "../utils/trpc";
 import "../styles/globals.css";
 import Layout from "../components/Layout";
 import { useEffect, useState } from "react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -43,6 +44,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <Layout darkMode={darkMode} setDarkMode={setDarkMode}>
         <Component {...pageProps} />
       </Layout>
+      <ReactQueryDevtools initialIsOpen={false} />
     </SessionProvider>
   );
 };
