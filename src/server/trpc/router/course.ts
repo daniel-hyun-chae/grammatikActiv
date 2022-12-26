@@ -1,3 +1,4 @@
+import type { Section } from "@prisma/client";
 import { z } from "zod";
 
 import { router, publicProcedure } from "../trpc";
@@ -27,23 +28,27 @@ export const courseRouter = router({
       }
     }),
   getById: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
-    const course = await ctx.prisma.course.findFirst({
-      where: {
-        id: input,
-      },
-      include: {
-        sections: true,
-      },
-    });
+    try {
+      const course = await ctx.prisma.course.findUniqueOrThrow({
+        where: {
+          id: input,
+        },
+        include: {
+          sections: true,
+        },
+      });
 
-    if (course) {
       course.sections = course.sectionsIdList.map((sectionId) => {
-        return course.sections.find((section) => {
+        const section = course.sections.find((section) => {
           return section.id === sectionId;
         });
+        return section as Section;
       });
+
+      return course;
+    } catch (error) {
+      console.log(error);
     }
-    return course;
   }),
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.course.findMany();

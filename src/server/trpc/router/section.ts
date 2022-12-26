@@ -1,46 +1,112 @@
 import { z } from "zod";
-import { sectionSchema } from "../../../components/CourseContent";
+import {
+  sectionCreateSchema,
+  sectionSchema,
+} from "../../../components/CourseContent";
+import cuid from "cuid";
 
 import { router, publicProcedure } from "../trpc";
 
 export const sectionRouter = router({
-  postSection: publicProcedure
-    .input(sectionSchema)
+  delete: publicProcedure
+    .input(sectionSchema.pick({ sectionId: true }))
     .mutation(async ({ ctx, input }) => {
       try {
-        const newSection = await ctx.prisma.section.create({
-          data: {
-            title: input.title,
-            courseId: input.courseId,
-          },
-        });
-
-        const course = await ctx.prisma.course.findUnique({
+        // Find the course that contains the section to be deleted
+        const course = await ctx.prisma.course.findFirst({
           where: {
-            id: input.courseId,
+            sectionsIdList: {
+              hasEvery: [input.sectionId],
+            },
           },
         });
 
         if (!course) throw new Error();
 
-        const sectionIdList = course.sectionsIdList;
-        let newSectionList;
-        if (!input.sectionId) {
-          newSectionList = [newSection.id];
-        } else {
-          const sectionIndex = sectionIdList?.indexOf(input.sectionId);
-          sectionIdList.splice(sectionIndex + 1, 0, newSection.id);
-          newSectionList = sectionIdList;
-        }
+        // Prepare the updated list of section IDs.
+        const newSectionList = course.sectionsIdList.filter((sectionId) => {
+          return sectionId !== input.sectionId;
+        });
 
-        await ctx.prisma.course.update({
+        await ctx.prisma.$transaction([
+          ctx.prisma.course.update({
+            where: {
+              id: course.id,
+            },
+            data: {
+              sectionsIdList: newSectionList,
+            },
+          }),
+          ctx.prisma.section.delete({
+            where: {
+              id: input.sectionId,
+            },
+          }),
+        ]);
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+  updateTitle: publicProcedure
+    .input(sectionSchema.pick({ sectionId: true, title: true }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const updatedSection = await ctx.prisma.section.update({
+          where: {
+            id: input.sectionId,
+          },
+          data: {
+            title: input.title,
+          },
+        });
+        return updatedSection;
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+  post: publicProcedure
+    .input(sectionCreateSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const sectionId = cuid();
+
+        // Find the course for which the section is to be created
+        const course = await ctx.prisma.course.findUnique({
           where: {
             id: input.courseId,
           },
-          data: {
-            sectionsIdList: newSectionList,
-          },
         });
+        if (!course) throw new Error();
+
+        // Prepare the updated list of section IDs.
+        const sectionIdList = course.sectionsIdList;
+        let newSectionList;
+        if (!input.prevSectionId) {
+          newSectionList = [sectionId];
+        } else {
+          const sectionIndex = sectionIdList?.indexOf(input.prevSectionId);
+          sectionIdList.splice(sectionIndex + 1, 0, sectionId);
+          newSectionList = sectionIdList;
+        }
+
+        // Perform creation of the new section and update of section ID list in transaction
+        const [newSection] = await ctx.prisma.$transaction([
+          ctx.prisma.section.create({
+            data: {
+              id: sectionId,
+              title: input.title,
+              courseId: input.courseId,
+            },
+          }),
+          ctx.prisma.course.update({
+            where: {
+              id: input.courseId,
+            },
+            data: {
+              sectionsIdList: newSectionList,
+            },
+          }),
+        ]);
 
         return newSection;
       } catch (error) {
