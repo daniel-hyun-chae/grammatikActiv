@@ -39,17 +39,14 @@ export function SectionCreatorForm({
   };
 
   return (
-    <form
-      className="flex flex-col pl-7"
-      onSubmit={handleSubmit(onSubmitHandler)}
-    >
+    <form className="flex flex-col" onSubmit={handleSubmit(onSubmitHandler)}>
       <input
         className="mt-2 border-b bg-transparent p-1 text-sm"
         placeholder="Enter section title"
         type="text"
         {...register("title")}
       />
-      <div className="mt-2 flex justify-end space-x-1">
+      <div className="mt-2 flex justify-end">
         <button
           className="rounded bg-slate-500 p-1 text-sm font-semibold text-neutral-100"
           onClick={() => {
