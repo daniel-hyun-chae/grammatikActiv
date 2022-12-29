@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { z } from "zod";
@@ -22,21 +23,43 @@ export default function CourseContent() {
   const courseId = router.query.id as string;
   const { data: course, isLoading } = trpc.course.getById.useQuery(courseId);
 
-  const [draggingItem, setDraggingItem] = useState<number>();
-  const [hoverringItem, setHoveringItem] = useState<number | null>();
-  const [droppedItem, setDroppedItem] = useState<number>();
+  const [draggingItemIndex, setDraggingItemIndex] = useState<number | null>(
+    null
+  );
+  const [hoveringPosition, setHoveringPosition] = useState<number | null>(null);
+
+  const queryClient = useQueryClient();
+  const updateSectionIdList = trpc.course.updateSectionIdList.useMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries([["course", "getById"]]);
+    },
+  });
 
   function handleDragStart(
-    e: React.DragEvent<HTMLDivElement>,
+    // e: React.DragEvent<HTMLDivElement>,
     position: number
   ) {
-    setDraggingItem(position);
-    console.log(draggingItem);
+    setDraggingItemIndex(position);
   }
 
-  function handleDragEnd(e: React.DragEvent<HTMLDivElement>, position: number) {
-    setDroppedItem(position);
-    console.log(droppedItem);
+  function handleDrop(e: React.DragEvent<HTMLDivElement>, position: number) {
+    const updatedList = [...course?.sectionsIdList];
+    console.log("toBe", updatedList);
+    console.log(draggingItemIndex);
+    if (typeof draggingItemIndex === "number" && updatedList) {
+      updatedList.splice(position, 0, updatedList.at(draggingItemIndex));
+      if (draggingItemIndex >= position) {
+        updatedList.splice(draggingItemIndex + 1, 1);
+      } else {
+        updatedList.splice(draggingItemIndex, 1);
+      }
+      updateSectionIdList.mutate({
+        courseId,
+        newSectionIdList: updatedList,
+      });
+    } else {
+      console.log("something wrong");
+    }
   }
 
   if (isLoading) {
@@ -75,30 +98,53 @@ export default function CourseContent() {
             {course.sections.map((section, index) => {
               return (
                 <div key={section.id}>
+                  {index === 0 && (
+                    <hr
+                      className={`border-2 border-transparent ${
+                        (draggingItemIndex === 0 || draggingItemIndex === 1) &&
+                        "invisible"
+                      } ${hoveringPosition === 0 && "border-neutral-500"}`}
+                      draggable
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        setHoveringPosition(0);
+                      }}
+                      onDragLeave={(e) => {
+                        e.preventDefault();
+                        setHoveringPosition(null);
+                      }}
+                      onDrop={(e) => {
+                        setHoveringPosition(null);
+                        handleDrop(e, 0);
+                      }}
+                    />
+                  )}
                   <SectionCreator
                     dragStartCallback={handleDragStart}
-                    dragEndCallback={handleDragEnd}
                     sectionId={section.id}
                     index={index}
                     title={section.title}
                   />
                   <hr
                     className={`border-2 border-transparent ${
-                      hoverringItem === index && "border-neutral-500"
+                      (draggingItemIndex === index ||
+                        draggingItemIndex === index + 1) &&
+                      "invisible"
+                    } ${
+                      hoveringPosition === index + 1 && "border-neutral-500"
                     }`}
                     draggable
                     onDragOver={(e) => {
                       e.preventDefault();
-                      setHoveringItem(index);
-                      console.log(hoverringItem);
+                      setHoveringPosition(index + 1);
                     }}
                     onDragLeave={(e) => {
                       e.preventDefault();
-                      setHoveringItem(null);
+                      setHoveringPosition(null);
                     }}
                     onDrop={(e) => {
-                      handleDragEnd(e, index);
-                      setHoveringItem(null);
+                      setHoveringPosition(null);
+                      handleDrop(e, index + 1);
                     }}
                   />
                 </div>

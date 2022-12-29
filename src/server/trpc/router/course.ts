@@ -4,7 +4,7 @@ import { z } from "zod";
 import { router, publicProcedure } from "../trpc";
 
 export const courseRouter = router({
-  postCourse: publicProcedure
+  post: publicProcedure
     .input(
       z.object({
         title: z.string(),
@@ -22,6 +22,25 @@ export const courseRouter = router({
             edition: input.edition,
             coverImageUrl: input.coverImageUrl,
           },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+  updateSectionIdList: publicProcedure
+    .input(
+      z.object({
+        courseId: z.string(),
+        newSectionIdList: z.array(z.string()),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.prisma.course.update({
+          where: {
+            id: input.courseId,
+          },
+          data: { sectionsIdList: input.newSectionIdList },
         });
       } catch (error) {
         console.log(error);

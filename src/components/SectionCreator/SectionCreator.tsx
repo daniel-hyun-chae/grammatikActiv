@@ -23,10 +23,9 @@ type SectionCreatorProps = {
   title: string;
   index: number;
   dragStartCallback: (
-    e: React.DragEvent<HTMLDivElement>,
+    // e: React.DragEvent<HTMLDivElement>,
     index: number
   ) => void;
-  dragEndCallback: (e: React.DragEvent<HTMLDivElement>, index: number) => void;
 };
 
 export const sectionUpdateSchema = z.object({
@@ -40,7 +39,6 @@ export default function SectionCreator({
   sectionId,
   index,
   dragStartCallback,
-  dragEndCallback,
 }: SectionCreatorProps) {
   // internal states
   const [newSectionFormOpen, setNewSectionFormOpen] = useState(false);
@@ -70,7 +68,6 @@ export default function SectionCreator({
     setNewSectionFormOpen(false);
   };
   const onSectionUpdateHandler: SubmitHandler<SectionUpdate> = (data) => {
-    console.log("called");
     updateSession.mutate({
       title: data.title,
       sectionId,
@@ -81,8 +78,7 @@ export default function SectionCreator({
     <div
       className="[SECTION]"
       onDragStart={(e) => {
-        console.log("started");
-        dragStartCallback(e, index);
+        dragStartCallback(index);
       }}
       draggable
     >

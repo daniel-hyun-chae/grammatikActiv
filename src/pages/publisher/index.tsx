@@ -75,7 +75,7 @@ function NewCourseCreationDialog() {
 
   const utils = trpc.useContext();
 
-  const postCourse = trpc.course.postCourse.useMutation({
+  const postCourse = trpc.course.post.useMutation({
     onMutate: () => {
       utils.course.getAll.cancel();
       const optimisticUpdate = utils.course.getAll.getData();
