@@ -20,17 +20,15 @@ export const IconWithTooltip = ({
   return (
     <Tooltip.Provider>
       <Tooltip.Root delayDuration={100}>
-        <Tooltip.Trigger>
-          <button
-            className="flex items-center"
-            onClick={() => {
-              onClickCallback && onClickCallback();
-            }}
-          >
-            <Icon
-              className={`h-7 w-7 rounded p-1 hover:bg-neutral-100 hover:dark:bg-neutral-700`}
-            />
-          </button>
+        <Tooltip.Trigger
+          className="flex items-center"
+          onClick={() => {
+            onClickCallback && onClickCallback();
+          }}
+        >
+          <Icon
+            className={`h-6 w-6 rounded p-0.5 hover:bg-neutral-100 hover:dark:bg-neutral-700`}
+          />
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content

@@ -28,18 +28,18 @@ model Course {
 }
 
 model Section {
-  id       String @id @default(cuid())
-  title    String
-  courseId String
-  course   Course @relation(fields: [courseId], references: [id])
-  units    Unit[]
+  id          String   @id @default(cuid())
+  title       String
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id])
+  unitsIdList String[]
+  units       Unit[]
 }
 
 model Unit {
   id        String  @id @default(cuid())
-  number    Int
   title     String
-  subTitle  String
+  subTitle  String?
   sectionId String
   section   Section @relation(fields: [sectionId], references: [id])
   // Exercises Exercise[] 

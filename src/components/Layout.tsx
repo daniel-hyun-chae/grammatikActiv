@@ -60,9 +60,9 @@ export default function Layout({
               className="ml-6 border-gray-500 pl-6 hover:cursor-pointer lg:border-l"
             >
               {darkMode ? (
-                <SunIcon className="h-6 w-6 text-amber-500" />
+                <SunIcon className="h-6 w-6 text-cyan-500" />
               ) : (
-                <MoonIcon className="h-5 w-5 text-amber-500" />
+                <MoonIcon className="h-5 w-5 text-cyan-500" />
               )}
             </div>
             <UserCircleIcon className="h-7 w-7 text-neutral-800 dark:text-neutral-300" />

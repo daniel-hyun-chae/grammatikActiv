@@ -167,7 +167,7 @@ function NewCourseCreationDialog() {
                 <div className="flex flex-col">
                   <Label.Root htmlFor="title">Course title</Label.Root>
                   <input
-                    className="focus:ring-cyan-40 rounded bg-neutral-200 py-2 px-3 ring-1 ring-cyan-300 focus:outline-0 focus:ring-2 dark:bg-neutral-700"
+                    className="rounded bg-neutral-200 py-2 px-3 ring-1 ring-amber-300 focus:outline-0 focus:ring-2 focus:ring-amber-400 dark:bg-neutral-700"
                     type="text"
                     id="title"
                     placeholder="Enter the course title"
@@ -180,7 +180,7 @@ function NewCourseCreationDialog() {
                 <div className="flex flex-col">
                   <Label.Root htmlFor="publisher">Publisher</Label.Root>
                   <input
-                    className="rounded bg-neutral-200 py-2 px-3 ring-1 ring-cyan-300 focus:outline-0 focus:ring-2 focus:ring-cyan-400 dark:bg-neutral-700"
+                    className="rounded bg-neutral-200 py-2 px-3 ring-1 ring-amber-300 focus:outline-0 focus:ring-2 focus:ring-amber-400 dark:bg-neutral-700"
                     type="text"
                     id="publisher"
                     placeholder="Enter the course publisher"

@@ -9,7 +9,7 @@ export default function TabsTrigger<T extends string[] = never>({
 }) {
   return (
     <Tabs.Trigger
-      className="border-b border-neutral-400 px-10 py-2 data-[state='active']:border-b-2 data-[state='active']:border-cyan-600"
+      className="border-b border-neutral-400 px-10 py-2 data-[state='active']:border-b-2 data-[state='active']:border-cyan-500"
       value={value}
     >
       {text}

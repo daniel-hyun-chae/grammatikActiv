@@ -11,7 +11,7 @@ export function SectionCreatorForm({
   onSubmitCallback,
   sectionId = null,
 }: {
-  onSubmitCallback: () => void;
+  onSubmitCallback?: () => void;
   sectionId: string | null;
 }) {
   const router = useRouter();
@@ -35,7 +35,7 @@ export function SectionCreatorForm({
       courseId: router.query.id,
       title: data.title,
     });
-    onSubmitCallback();
+    onSubmitCallback && onSubmitCallback();
   };
 
   return (
@@ -50,7 +50,7 @@ export function SectionCreatorForm({
         <button
           className="rounded bg-slate-500 p-1 text-sm font-semibold text-neutral-100"
           onClick={() => {
-            onSubmitCallback();
+            onSubmitCallback && onSubmitCallback();
           }}
         >
           Cancel

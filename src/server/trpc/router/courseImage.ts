@@ -6,7 +6,7 @@ import { router, publicProcedure } from "../trpc";
 export const courseImageRouter = router({
   postPresignedPost: publicProcedure
     .input(z.object({ fileExtension: z.string() }))
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       try {
         const preSignedPost = await uploadCourseCoverImage(input.fileExtension);
         return preSignedPost;

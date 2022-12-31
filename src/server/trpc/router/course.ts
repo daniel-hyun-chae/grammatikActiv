@@ -1,4 +1,4 @@
-import type { Section } from "@prisma/client";
+import type { Section, Unit } from "@prisma/client";
 import { z } from "zod";
 
 import { router, publicProcedure } from "../trpc";
@@ -53,7 +53,11 @@ export const courseRouter = router({
           id: input,
         },
         include: {
-          sections: true,
+          sections: {
+            include: {
+              units: true,
+            },
+          },
         },
       });
 
@@ -61,7 +65,7 @@ export const courseRouter = router({
         const section = course.sections.find((section) => {
           return section.id === sectionId;
         });
-        return section as Section;
+        return section as Section & { units: Unit[] };
       });
 
       return course;

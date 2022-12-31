@@ -2,7 +2,7 @@ import { z } from "zod";
 import {
   sectionCreateSchema,
   sectionSchema,
-} from "../../../components/CourseContent";
+} from "../../../components/CourseCreator/ContentCreator";
 import cuid from "cuid";
 
 import { router, publicProcedure } from "../trpc";

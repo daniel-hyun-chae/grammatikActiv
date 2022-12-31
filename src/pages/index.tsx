@@ -1,18 +1,10 @@
 import { type NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
-
-import { trpc } from "../utils/trpc";
+// import Head from "next/head";
+// import Link from "next/link";
+// import { signIn, signOut, useSession } from "next-auth/react";
 
 const Home: NextPage = () => {
-  const books = trpc.book.getAll.useQuery();
-
-  return (
-    <div>
-      <div>{books.data ? JSON.stringify(books.data) : null}</div>
-    </div>
-  );
+  return <div></div>;
 };
 
 // const Home: NextPage = () => {
