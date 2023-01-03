@@ -17,8 +17,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { SectionCreatorForm } from "./SectionCreatorForm";
 import { IconWithTooltip } from "../IconWithTooltip";
-import { UnitCreator } from "../SectionCreator/UnitCreator";
+import { UnitCreator } from "./UnitCreator";
 import type { Unit } from "@prisma/client";
+import { UnitCreatorForm } from "./UnitCreatorForm";
 
 type SectionCreatorProps = {
   sectionId: string;
@@ -88,12 +89,7 @@ export default function SectionCreator({
         draggable
       >
         <Collapsible.Root open={sectionOpen} onOpenChange={setSectionOpen}>
-          <div
-            className="[SECTION-HEADER] group flex items-center"
-            onDrag={() => {
-              console.log("test");
-            }}
-          >
+          <div className="[SECTION-HEADER] group flex items-center">
             <div className="[SECTION-HEADER-TITLE] mr-1 flex grow">
               <Collapsible.Trigger asChild>
                 <button>
@@ -123,7 +119,7 @@ export default function SectionCreator({
                   </button>
                 </form>
               ) : (
-                <div className="[SECTION-HEADER-TITLE] flex grow text-lg font-semibold text-cyan-500">
+                <div className="[SECTION-HEADER-TITLE] flex grow text-lg font-semibold text-white">
                   <span className="grow px-1 capitalize group-hover:bg-neutral-700">
                     {title}
                   </span>
@@ -164,7 +160,21 @@ export default function SectionCreator({
           </div>
           <Collapsible.Content>
             <div className="px-2 pt-2">
-              <UnitCreator sectionId={sectionId} units={units} />
+              {units.length === 0 && (
+                <div className="flex flex-col space-y-1 pl-2">
+                  <div className="">Add the first unit for the section</div>
+                  <UnitCreatorForm prevUnitId={null} sectionId={sectionId} />
+                </div>
+              )}
+              <ul className="space-y-2">
+                {units.map((unit) => {
+                  return (
+                    <li key={unit.id}>
+                      <UnitCreator sectionId={sectionId} unit={unit} />
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           </Collapsible.Content>
         </Collapsible.Root>

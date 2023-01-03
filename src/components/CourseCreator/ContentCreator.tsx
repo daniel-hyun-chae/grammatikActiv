@@ -1,8 +1,12 @@
 import { useRouter } from "next/router";
+import type { Dispatch, SetStateAction } from "react";
+import { createContext, useState } from "react";
+
 import { z } from "zod";
 import { trpc } from "../../utils/trpc";
 import Section from "./SectionCreator";
 import { TableOfContentCreator } from "./TableOfContentCreator";
+import { UnitContentDesigner } from "./UnitContentDesigner";
 
 export const sectionCreateSchema = z.object({
   title: z.string().min(1),
@@ -16,10 +20,24 @@ export const sectionSchema = sectionCreateSchema.extend({
 
 export type Section = z.infer<typeof sectionSchema>;
 
+export const selectedUnitContext = createContext<{
+  selectedUnitId: string | undefined;
+  setSelectedUnitId: Dispatch<SetStateAction<string | undefined>> | undefined;
+}>({ selectedUnitId: undefined, setSelectedUnitId: undefined });
+
 export default function CourseContentCreator() {
   const router = useRouter();
   const courseId = router.query.id as string;
-  const { data: course, isLoading } = trpc.course.getById.useQuery(courseId);
+
+  const [selectedUnitId, setSelectedUnitId] = useState<string | undefined>(
+    undefined
+  );
+
+  const { data: course, isLoading } = trpc.course.getById.useQuery(courseId, {
+    onSuccess: () => {
+      setSelectedUnitId(course?.sections[0]?.id);
+    },
+  });
 
   if (isLoading) {
     // Replace it to be a spinner
@@ -29,16 +47,22 @@ export default function CourseContentCreator() {
     return null;
   } else {
     return (
-      <div className="flex h-full">
-        <div className="[SIDEBAR] h-full w-96 overflow-x-auto border-r dark:bg-neutral-800">
-          <TableOfContentCreator
-            sectionIdList={course.sectionsIdList}
-            courseId={courseId}
-            sections={course.sections}
-          />
+      <selectedUnitContext.Provider
+        value={{ selectedUnitId, setSelectedUnitId }}
+      >
+        <div className="flex h-full">
+          <div className="[SIDEBAR] h-full w-96 overflow-x-auto border-r dark:bg-neutral-800">
+            <TableOfContentCreator
+              sectionIdList={course.sectionsIdList}
+              courseId={courseId}
+              sections={course.sections}
+            />
+          </div>
+          <div className="[CONTENT] grow">
+            <UnitContentDesigner selectedUnitId={selectedUnitId} />
+          </div>
         </div>
-        <div className="[CONTENT]">Content planner</div>
-      </div>
+      </selectedUnitContext.Provider>
     );
   }
 }

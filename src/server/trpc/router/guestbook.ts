@@ -14,7 +14,6 @@ export const guestbookRouter = router({
         },
       });
     } catch (error) {
-      console.log("reached");
       console.log("error", error);
     }
   }),

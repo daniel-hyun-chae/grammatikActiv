@@ -1,7 +1,7 @@
 import * as Tabs from "@radix-ui/react-tabs";
-import CourseContentCreator from "../../../components/CourseCreator/ContentCreator";
-import TabsContent from "../../../components/Tabs/TabsContent";
-import TabsTrigger from "../../../components/Tabs/TabsTrigger";
+import CourseContentCreator from "../../../../components/CourseCreator/ContentCreator";
+import TabsContent from "../../../../components/Tabs/TabsContent";
+import TabsTrigger from "../../../../components/Tabs/TabsTrigger";
 
 type CourseEditPageTabsValue = [
   "course-advertisement",
@@ -30,7 +30,9 @@ export default function CourseEditPage() {
         />
       </Tabs.List>
       <TabsContent<CourseEditPageTabsValue> tabsValue="course-content">
-        <CourseContentCreator />
+        <div className="h-full py-10">
+          <CourseContentCreator />
+        </div>
       </TabsContent>
       <TabsContent<CourseEditPageTabsValue> tabsValue="course-advertisement">
         course ads

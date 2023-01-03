@@ -52,6 +52,9 @@ export const TableOfContentCreator = ({
   }
   return (
     <div>
+      <div className="pl-2 text-xl font-semibold text-cyan-400">
+        Table of contents designer
+      </div>
       {sections.length === 0 && (
         <div>
           <div>Create the first section</div>

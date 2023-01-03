@@ -1,7 +1,6 @@
 import cuid from "cuid";
+import { unitCreationSchema } from "../../../components/CourseCreator/UnitCreatorForm";
 import { router, publicProcedure } from "../trpc";
-import { unitCreationSchema } from "../../../components/SectionCreator/UnitCreator";
-
 export const unitRouter = router({
   // delete: publicProcedure
   //   .input(sectionSchema.pick({ sectionId: true }))
