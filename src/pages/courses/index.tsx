@@ -1,3 +1,7 @@
 export default function Courses() {
-  return <div className="w-full"></div>;
+  return (
+    <div className="h-full">
+      <div>test</div>
+    </div>
+  );
 }

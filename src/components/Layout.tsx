@@ -48,7 +48,7 @@ export default function Layout({
                   <Link href="/courses">Discover Courses</Link>
                 </li>
                 <li>
-                  <Link href="/my-course">My Courses</Link>
+                  <Link href="/myCourse">My Courses</Link>
                 </li>
                 <li>
                   <Link href="/publisher">Publisher</Link>
@@ -77,14 +77,14 @@ export default function Layout({
       <nav className="[BOTTOM-BAR-CONTAINER] w-full border-t dark:border-neutral-700 dark:bg-neutral-800 lg:hidden">
         <ul className="flex justify-around gap-3 py-1 ">
           <BottomNavLink
-            href="/my-learning"
-            text="My learning"
-            icon={PlayCircleIcon}
-          />
-          <BottomNavLink
             href="/courses"
             text="Courses"
             icon={MagnifyingGlassCircleIcon}
+          />
+          <BottomNavLink
+            href="/myCourse"
+            text="My Courses"
+            icon={PlayCircleIcon}
           />
           <BottomNavLink
             href="/publisher"
