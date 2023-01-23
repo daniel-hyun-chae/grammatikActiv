@@ -15,43 +15,50 @@ export default function ConnectSentence({
     );
   }
 
-  //Extract id of sentence pairs. We do not want this to run for each render so useRef.
   const sentencePairIds = useRef(createSentencePairIdList(sentencePairs));
-
-  //Shuffle the id of sentence pair for the left side. We do not want this to run for each render so useRef.
-  const shuffledSentencePairIdsLeftRef = useRef(
-    _.shuffle(sentencePairIds.current)
-  );
-
-  //Shuffle the id of sentence pair for the right side. We do not want this to run for each render so useRef.
-  const shuffledSentencePairIdsRightRef = useRef(
-    _.shuffle(sentencePairIds.current)
-  );
+  const shuffledSentencePairIdsLeftRef = useRef<string[]>([]);
+  const shuffledSentencePairIdsRightRef = useRef<string[]>([]);
 
   type Item = {
     id: string;
     node: HTMLDivElement;
   };
-
-  // Ref to keep an array of Items
   const leftItemsRef = useRef<Array<Item>>([]);
   const rightItemsRef = useRef<Array<Item>>([]);
 
   // Ref to keep an left and right box node
   const leftBoxRef = useRef<HTMLDivElement>(null);
   const rightBoxRef = useRef<HTMLDivElement>(null);
+
   const svgBoxRefCallback = useCallback((node: HTMLDivElement) => {
     setSvgBox(node);
+    setSvgBoxWidth(svgBox?.clientWidth);
   }, []);
 
   const [leftBox, setLeftBox] = useState<HTMLDivElement | null>(null);
   const [rightBox, setRightBox] = useState<HTMLDivElement | null>(null);
   const [svgBox, setSvgBox] = useState<HTMLDivElement | null>(null);
 
+  const [svgBoxWidth, setSvgBoxWidth] = useState(0);
+
   useEffect(() => {
+    shuffledSentencePairIdsLeftRef.current = _.shuffle(sentencePairIds.current);
+    shuffledSentencePairIdsRightRef.current = _.shuffle(
+      sentencePairIds.current
+    );
     setLeftBox(leftBoxRef.current);
     setRightBox(rightBoxRef.current);
   }, []);
+
+  useEffect(() => {
+    function handleResize() {
+      setSvgBoxWidth(svgBox?.clientWidth);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
 
   type Connection = {
     left: string;
@@ -136,7 +143,7 @@ export default function ConnectSentence({
           {svgBox && (
             <svg
               className="h-full w-full"
-              viewBox={`0 0 ${svgBox.clientWidth} ${
+              viewBox={`0 0 ${svgBoxWidth} ${
                 leftBox.clientHeight > rightBox.clientHeight
                   ? leftBox.clientHeight
                   : rightBox.clientHeight

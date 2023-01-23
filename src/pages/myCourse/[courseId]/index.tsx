@@ -131,66 +131,90 @@ export default function MyCourse() {
     },
   ]);
 
-  const [sideBarOpen, setSideBarOpen] = useState(false);
-
   function SideBarItem({ text }: { text: string }) {
     return <li className="py-2 text-white">{text}</li>;
   }
 
   return (
-    <div className="flex h-full flex-col">
-      {/* <div className="h-full w-96 border-r">side</div> */}
-      <Dialog.Root>
-        <div className="flex items-center space-x-4 border-b border-neutral-600 py-2 px-3">
-          <Dialog.Trigger asChild>
-            <button>
-              <Bars3Icon className="h-5 w-5" />
-            </button>
-          </Dialog.Trigger>
-          <span>Unit title</span>
-        </div>
-        <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 overflow-auto bg-neutral-700/50">
-            <Dialog.DialogContent className="relative min-h-full w-10/12 bg-neutral-800">
-              <ul className="p-5">
-                <SideBarItem text="Unit1" />
-                <SideBarItem text="Unit2" />
-                <SideBarItem text="Unit3" />
-                <SideBarItem text="Unit4" />
-                <SideBarItem text="Unit1" />
-                <SideBarItem text="Unit2" />
-                <SideBarItem text="Unit3" />
-                <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
-                <SideBarItem text="Unit2" />
-                <SideBarItem text="Unit3" />
-                <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
-                <SideBarItem text="Unit2" />
-                <SideBarItem text="Unit3" />
-                <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
-                <SideBarItem text="Unit2" />
-                <SideBarItem text="Unit3" />
-                <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
-                <SideBarItem text="Unit2" />
-                <SideBarItem text="Unit3" />
-                <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
-                <SideBarItem text="Unit2" />
-                <SideBarItem text="Unit3" />
-                <SideBarItem text="Unit4" />
-              </ul>
-              <Dialog.Close asChild>
-                <button
-                  className="absolute top-5 right-5 h-5 w-5 text-white"
-                  aria-label="Close"
-                >
-                  <XMarkIcon />
-                </button>
-              </Dialog.Close>
-            </Dialog.DialogContent>
-          </Dialog.Overlay>
-        </Dialog.Portal>
-      </Dialog.Root>
-
-      {sideBarOpen && <div>sideBar</div>}
+    <div className="flex h-full flex-col lg:flex-row">
+      <div className="lg:hidden">
+        <Dialog.Root>
+          <div className="flex items-center space-x-4 border-b border-neutral-600 py-2 px-3">
+            <Dialog.Trigger asChild>
+              <button>
+                <Bars3Icon className="h-5 w-5" />
+              </button>
+            </Dialog.Trigger>
+            <span>Unit title</span>
+          </div>
+          <Dialog.Portal>
+            <Dialog.Overlay className="fixed inset-0 overflow-auto bg-neutral-700/50">
+              <Dialog.DialogContent className="relative min-h-full w-10/12 bg-neutral-800">
+                <ul className="p-5">
+                  <SideBarItem text="Unit1" />
+                  <SideBarItem text="Unit2" />
+                  <SideBarItem text="Unit3" />
+                  <SideBarItem text="Unit4" />
+                  <SideBarItem text="Unit1" />
+                  <SideBarItem text="Unit2" />
+                  <SideBarItem text="Unit3" />
+                  <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
+                  <SideBarItem text="Unit2" />
+                  <SideBarItem text="Unit3" />
+                  <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
+                  <SideBarItem text="Unit2" />
+                  <SideBarItem text="Unit3" />
+                  <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
+                  <SideBarItem text="Unit2" />
+                  <SideBarItem text="Unit3" />
+                  <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
+                  <SideBarItem text="Unit2" />
+                  <SideBarItem text="Unit3" />
+                  <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
+                  <SideBarItem text="Unit2" />
+                  <SideBarItem text="Unit3" />
+                  <SideBarItem text="Unit4" />
+                </ul>
+                <Dialog.Close asChild>
+                  <button
+                    className="absolute top-5 right-5 h-5 w-5 text-white"
+                    aria-label="Close"
+                  >
+                    <XMarkIcon />
+                  </button>
+                </Dialog.Close>
+              </Dialog.DialogContent>
+            </Dialog.Overlay>
+          </Dialog.Portal>
+        </Dialog.Root>
+      </div>
+      <div className="hidden w-60 overflow-y-scroll lg:flex">
+        <ul className="p-5">
+          <SideBarItem text="Unit1" />
+          <SideBarItem text="Unit2" />
+          <SideBarItem text="Unit3" />
+          <SideBarItem text="Unit4" />
+          <SideBarItem text="Unit1" />
+          <SideBarItem text="Unit2" />
+          <SideBarItem text="Unit3" />
+          <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
+          <SideBarItem text="Unit2" />
+          <SideBarItem text="Unit3" />
+          <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
+          <SideBarItem text="Unit2" />
+          <SideBarItem text="Unit3" />
+          <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
+          <SideBarItem text="Unit2" />
+          <SideBarItem text="Unit3" />
+          <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
+          <SideBarItem text="Unit2" />
+          <SideBarItem text="Unit3" />
+          <SideBarItem text="Unit4" /> <SideBarItem text="Unit1" />
+          <SideBarItem text="Unit2" />
+          <SideBarItem text="Unit3" />
+          <SideBarItem text="Unit4" />
+        </ul>
+      </div>
       <div className="h-full grow px-3 py-5">
         <Exercises exercises={exercises} />
       </div>
