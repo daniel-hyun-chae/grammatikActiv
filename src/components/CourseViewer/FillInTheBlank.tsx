@@ -70,7 +70,7 @@ function Blank({
   } else {
     return (
       <input
-        className="border-b bg-neutral-800 text-center"
+        className="border-b text-center dark:bg-neutral-800"
         size={sentenceElement.length}
         value={userAnswer}
         onChange={(e) => {

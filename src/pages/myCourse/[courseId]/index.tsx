@@ -46,11 +46,11 @@ export default function MyCourse() {
             {
               id: "test",
               left: "Ich",
-              right: "kommen aus China",
+              right: "komme aus China",
             },
             {
               id: "test2",
-              left: "due",
+              left: "du",
               right: "arbeitest in Frankfurt",
             },
             {
@@ -132,7 +132,7 @@ export default function MyCourse() {
   ]);
 
   function SideBarItem({ text }: { text: string }) {
-    return <li className="py-2 text-white">{text}</li>;
+    return <li className="py-2 text-neutral-600 dark:text-white">{text}</li>;
   }
 
   return (
@@ -247,7 +247,11 @@ function Exercise({ exercise }: { exercise: Exercise }) {
                 />
               )}
               {exerciseItem.type === "connectSentence" && (
-                <ConnectSentence sentencePairs={exerciseItem.sentencePairs} />
+                <ConnectSentence
+                  sentencePairs={exerciseItem.sentencePairs}
+                  checkAnswer={checkAnswer}
+                  reset={reset}
+                />
               )}
             </li>
           );

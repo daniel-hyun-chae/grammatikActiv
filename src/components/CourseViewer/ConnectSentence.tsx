@@ -4,8 +4,12 @@ import type { SentencePair } from "../../pages/myCourse/[courseId]";
 
 export default function ConnectSentence({
   sentencePairs,
+  checkAnswer,
+  reset,
 }: {
   sentencePairs: SentencePair[];
+  checkAnswer: boolean;
+  reset: boolean;
 }) {
   //Function to extract id of sentence pairs
   function createSentencePairIdList(sentencePairs: SentencePair[]) {
@@ -75,6 +79,12 @@ export default function ConnectSentence({
     side: null,
     id: null,
   });
+
+  useEffect(() => {
+    if (reset) {
+      setConnections([]);
+    }
+  }, [reset]);
 
   const getYcoornidate = (side: "left" | "right", id: string) => {
     if (side === "left") {
@@ -272,28 +282,132 @@ export default function ConnectSentence({
                     />
                   );
                 })}
-                {connections.map((connection) => {
-                  return (
-                    <line
-                      className="fill-cyan-600 stroke-cyan-600 hover:cursor-pointer hover:stroke-amber-600"
-                      onClick={() => {
-                        const left = connection.left;
-                        const newConnections = connections.filter(
-                          (connection) => {
-                            return connection.left !== left;
-                          }
-                        );
-                        setConnections(newConnections);
-                      }}
-                      strokeWidth={4}
-                      x1="10%"
-                      x2="90%"
-                      y1={getYcoornidate("left", connection.left)}
-                      y2={getYcoornidate("right", connection.right)}
-                      key={connection.left + connection.right}
-                    />
-                  );
-                })}
+                {checkAnswer && [
+                  ...connections
+                    .filter((connection) => {
+                      return connection.left === connection.right;
+                    })
+                    .map((correctConnection) => {
+                      return (
+                        <line
+                          className="fill-green-600 stroke-green-600"
+                          onClick={() => {
+                            const left = correctConnection.left;
+                            const newConnections = connections.filter(
+                              (connection) => {
+                                return connection.left !== left;
+                              }
+                            );
+                            setConnections(newConnections);
+                          }}
+                          strokeWidth={4}
+                          x1="10%"
+                          x2="90%"
+                          y1={getYcoornidate("left", correctConnection.left)}
+                          y2={getYcoornidate("right", correctConnection.right)}
+                          key={correctConnection.left + correctConnection.right}
+                        />
+                      );
+                    }),
+                  ...connections
+                    .filter((connection) => {
+                      return connection.left !== connection.right;
+                    })
+                    .map((correctConnection) => {
+                      return (
+                        <>
+                          <line
+                            className="fill-neutral-300 stroke-neutral-300"
+                            onClick={() => {
+                              const left = correctConnection.left;
+                              const newConnections = connections.filter(
+                                (connection) => {
+                                  return connection.left !== left;
+                                }
+                              );
+                              setConnections(newConnections);
+                            }}
+                            strokeWidth={4}
+                            x1="10%"
+                            x2="90%"
+                            y1={getYcoornidate("left", correctConnection.left)}
+                            y2={getYcoornidate(
+                              "right",
+                              correctConnection.right
+                            )}
+                          />
+                          <line
+                            className="fill-red-600 stroke-red-600"
+                            onClick={() => {
+                              const left = correctConnection.left;
+                              const newConnections = connections.filter(
+                                (connection) => {
+                                  return connection.left !== left;
+                                }
+                              );
+                              setConnections(newConnections);
+                            }}
+                            strokeWidth={4}
+                            x1="10%"
+                            x2="90%"
+                            y1={getYcoornidate("left", correctConnection.left)}
+                            y2={getYcoornidate("right", correctConnection.left)}
+                          />
+                        </>
+                      );
+                    }),
+                  ...sentencePairIds.current
+                    .filter((id) => {
+                      return !connections.find((connection) => {
+                        return connection.left === id;
+                      });
+                    })
+                    .map((notSubmitted) => {
+                      return (
+                        <line
+                          className="fill-red-600 stroke-red-600"
+                          onClick={() => {
+                            const left = notSubmitted;
+                            const newConnections = connections.filter(
+                              (connection) => {
+                                return connection.left !== left;
+                              }
+                            );
+                            setConnections(newConnections);
+                          }}
+                          strokeWidth={4}
+                          x1="10%"
+                          x2="90%"
+                          y1={getYcoornidate("left", notSubmitted)}
+                          y2={getYcoornidate("right", notSubmitted)}
+                          key={notSubmitted}
+                        />
+                      );
+                    }),
+                ]}
+                {!checkAnswer &&
+                  connections.map((connection) => {
+                    return (
+                      <line
+                        className="fill-cyan-600 stroke-cyan-600 hover:cursor-pointer hover:stroke-amber-600"
+                        onClick={() => {
+                          const left = connection.left;
+                          const newConnections = connections.filter(
+                            (connection) => {
+                              return connection.left !== left;
+                            }
+                          );
+                          setConnections(newConnections);
+                        }}
+                        strokeWidth={4}
+                        x1="10%"
+                        x2="90%"
+                        y1={getYcoornidate("left", connection.left)}
+                        y2={getYcoornidate("right", connection.right)}
+                        key={connection.left + connection.right}
+                      />
+                    );
+                  })}
               </>
             </svg>
           )}

@@ -120,7 +120,7 @@ export default function SectionCreator({
                 </form>
               ) : (
                 <div className="[SECTION-HEADER-TITLE] flex grow text-lg font-semibold text-white">
-                  <span className="grow px-1 capitalize group-hover:bg-neutral-700">
+                  <span className="grow px-1 capitalize text-neutral-800 group-hover:bg-cyan-600 dark:text-white dark:group-hover:bg-neutral-700">
                     {title}
                   </span>
                 </div>
