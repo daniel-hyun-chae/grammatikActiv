@@ -24,7 +24,7 @@ export const UnitCreator = ({
   return (
     <div className="UNIT">
       <div
-        className="[UNIT-HEADER items-center] group flex border-l-4 pl-4"
+        className="[UNIT-HEADER items-center] group flex border-l-2 pl-4"
         key={unit.id}
       >
         <div
@@ -60,7 +60,7 @@ export const UnitCreator = ({
         </div>
       </div>
       {unitCreatorFormOpen && (
-        <div className="mt-2 border-l-4 px-4">
+        <div className="mt-2 border-l-2 px-4">
           <UnitCreatorForm
             onCancelCallback={() => {
               setUnitCreatorFormOpen(false);

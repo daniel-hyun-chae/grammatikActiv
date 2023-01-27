@@ -5,6 +5,7 @@ import Link from "next/link";
 
 export default function MyCourse() {
   const { data: courses, isLoading } = trpc.course.getAll.useQuery();
+
   if (isLoading) return <div>Fetching messages...</div>;
   return (
     <div className="pt-10">

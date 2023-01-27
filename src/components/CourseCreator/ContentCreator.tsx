@@ -6,7 +6,7 @@ import { z } from "zod";
 import { trpc } from "../../utils/trpc";
 import Section from "./SectionCreator";
 import { TableOfContentCreator } from "./TableOfContentCreator";
-import { UnitContentDesigner } from "./UnitContentDesigner";
+import UnitContentDesigner from "./UnitContentDesigner";
 
 export const sectionCreateSchema = z.object({
   title: z.string().min(1),

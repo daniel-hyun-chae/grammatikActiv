@@ -82,7 +82,7 @@ export default function SectionCreator({
   return (
     <div className="space-y-2">
       <div
-        className="[SECTION] border-l-4 border-cyan-500"
+        className="[SECTION] border-l-2 border-cyan-600"
         onDragStart={() => {
           dragStartCallback(index);
         }}
@@ -180,7 +180,7 @@ export default function SectionCreator({
         </Collapsible.Root>
       </div>
       {newSectionFormOpen && (
-        <div className="border-l-4 border-cyan-500 px-2">
+        <div className="border-l-2 border-cyan-600 px-2">
           <SectionCreatorForm
             sectionId={sectionId}
             onSubmitCallback={sectionCreationFormCallback}

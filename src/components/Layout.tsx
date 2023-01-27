@@ -34,12 +34,15 @@ export default function Layout({
       <div className="[TOP-BAR-CONTAINER] flex w-full justify-center border-b dark:border-neutral-700">
         <div className="[TOP-BAR] flex max-w-screen-2xl flex-grow items-center justify-between p-2">
           <div className="[TOP-BAR-LEFT] flex items-center space-x-5">
-            <div className="[TOP-BAR-LEFT-ICON] flex items-center gap-1">
-              <CursorArrowRippleIcon className="h-6 w-6 text-cyan-500" />
-              <span className="[TOP-BAR-LEFT-TEXT] text-lg">
+            <Link
+              className="[TOP-BAR-LEFT-ICON] flex items-center gap-1"
+              href="/"
+            >
+              {/* <CursorArrowRippleIcon className="h-6 w-6 text-cyan-500" /> */}
+              <span className="[TOP-BAR-LEFT-TEXT] font-oxanium">
                 Interactive Learning
               </span>
-            </div>
+            </Link>
           </div>
           <div className="[TOP-BAR-RIGHT] flex flex-row items-center justify-end gap-3">
             <nav className="hidden lg:block">
@@ -65,11 +68,13 @@ export default function Layout({
                 <MoonIcon className="h-5 w-5 text-cyan-500" />
               )}
             </div>
-            <UserCircleIcon className="h-7 w-7 text-neutral-800 dark:text-neutral-300" />
+            <UserCircleIcon className="h-7 w-7 stroke-1 text-neutral-800 dark:text-neutral-300" />
           </div>
         </div>
       </div>
-      <div className={`[CONTENT-CONTAINER] w-full flex-grow overflow-y-auto`}>
+      <div
+        className={`[CONTENT-CONTAINER] w-full flex-grow overflow-hidden overflow-y-auto`}
+      >
         <div className="[CONTENT] m-auto flex h-full max-w-screen-2xl flex-grow">
           <main className="[CONTENT-MAIN] h-full flex-grow">{children}</main>
         </div>

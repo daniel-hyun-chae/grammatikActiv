@@ -37,58 +37,60 @@ model Section {
 }
 
 model Unit {
-  id        String  @id @default(cuid())
+  id        String     @id @default(cuid())
   title     String
   subTitle  String?
   sectionId String
-  section   Section @relation(fields: [sectionId], references: [id])
-  // Exercises Exercise[] 
-  // @@unique([courseId, number])
+  section   Section    @relation(fields: [sectionId], references: [id])
+  Exercises Exercise[]
 }
 
-// model Exercise {
-//   id String @id @default(cuid())
-//   number Int
-//   instruction String
-//   unitId String
-//   unit Unit @relation(fields: [unitId], references: [id])
-//   exerciseItems ExerciseItem[] 
-//   @@unique([unitId, number])
-// }
+model Exercise {
+  id                  String                @id @default(cuid())
+  instruction         String
+  unitId              String
+  type                ExerciseType
+  fillInTheBlankItems FillInTheBlankItem[]
+  connectSentenceItem ConnectSentenceItem[]
 
-// model ExerciseItem {
-//   id String @id @default(cuid())
-//   number Int
-//   exerciseSegments ExerciseSegment[]
-//   exerciseId String
-//   exercise Exercise @relation(fields: [exerciseId], references: [id])
-// }
+  unit Unit @relation(fields: [unitId], references: [id])
+}
 
-// model ExerciseSegment {
-//   id String @id @default(cuid())
-//   type ExerciseSegmentType
-//   content String[]
-//   exerciseItemId String
-//   exerciseId ExerciseItem @relation(fields: [exerciseItemId], references:[id])
-// }
+model FillInTheBlankItem {
+  id       String  @id @default(cuid())
+  sentence String
+  blanks   Blank[]
 
-// enum ExerciseSegmentType {
-//   TEXT
-//   BLANK
-// }
+  exerciseId             String?
+  exercise               Exercise?            @relation(fields: [exerciseId], references: [id])
+  connectSentenceLeftId  String?              @unique
+  connectSentenceLeft    ConnectSentenceItem? @relation("connectSentenceLeft", fields: [connectSentenceLeftId], references: [id])
+  connectSentenceRightId String?              @unique
+  connectSentenceRight   ConnectSentenceItem? @relation("connectSentenceRight", fields: [connectSentenceRightId], references: [id])
+}
 
-// model Answer {
-//   id String @id @default(cuid())
-//   answer String[]
-//   exerciseItemId String
-//   exercise ExerciseItem @relation(fields: [exerciseItemId], references: [id])
-// }
+model ConnectSentenceItem {
+  id                  String              @id @default(cuid())
+  leftString          String?
+  rightString         String?
+  leftFillInTheBlank  FillInTheBlankItem? @relation("connectSentenceLeft")
+  rightFillInTheBlank FillInTheBlankItem? @relation("connectSentenceRight")
 
-// model Example {
-//   id        String   @id @default(cuid())
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
+  exerciseId String
+  Exercise   Exercise @relation(fields: [exerciseId], references: [id])
+}
+
+model Blank {
+  id                   String             @id @default(cuid())
+  start                Int
+  end                  Int
+  FillInTheBlankItem   FillInTheBlankItem @relation(fields: [fillInTheBlankItemId], references: [id])
+  fillInTheBlankItemId String
+}
+
+enum ExerciseType {
+  FillInTheBlankItem
+}
 
 // Necessary for Next auth
 model Account {

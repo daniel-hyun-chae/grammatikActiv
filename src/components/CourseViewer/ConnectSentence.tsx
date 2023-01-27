@@ -1,6 +1,11 @@
 import _ from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { SentencePair } from "../../pages/myCourse/[courseId]";
+import type {
+  FillInTheBlankExercise,
+  FillInTheBlankItem,
+  SentencePair,
+} from "../../pages/myCourse/[courseId]";
+import FillInTheBlank from "./FillInTheBlank";
 
 export default function ConnectSentence({
   sentencePairs,
@@ -140,6 +145,14 @@ export default function ConnectSentence({
                 }}
               >
                 {typeof pair.left === "string" && <div>{pair.left}</div>}
+                {isFillInTheblank(pair.left) && (
+                  <FillInTheBlank
+                    sentence={pair.left.sentence}
+                    blanks={pair.left.blanks}
+                    checkAnswer={checkAnswer}
+                    reset={reset}
+                  />
+                )}
               </div>
             );
           }
@@ -439,6 +452,14 @@ export default function ConnectSentence({
                 }}
               >
                 {typeof pair.right === "string" && <div>{pair.right}</div>}
+                {isFillInTheblank(pair.right) && (
+                  <FillInTheBlank
+                    sentence={pair.right.sentence}
+                    blanks={pair.right.blanks}
+                    checkAnswer={checkAnswer}
+                    reset={reset}
+                  />
+                )}
               </div>
             );
           }
@@ -446,4 +467,10 @@ export default function ConnectSentence({
       </div>
     </div>
   );
+}
+
+function isFillInTheblank(
+  exerciseItem: string | FillInTheBlankItem
+): exerciseItem is FillInTheBlankItem {
+  return (exerciseItem as FillInTheBlankItem).sentence !== undefined;
 }

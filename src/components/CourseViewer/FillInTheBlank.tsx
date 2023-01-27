@@ -1,45 +1,44 @@
 import { useEffect, useState } from "react";
 
 export default function FillInTheBlank({
-  sentenceArray,
+  sentence,
   blanks,
   checkAnswer,
   reset,
 }: {
-  sentenceArray: string[];
-  blanks: number[];
+  sentence: string;
+  blanks: { start: number; end: number }[];
   checkAnswer: boolean;
   reset: boolean;
 }) {
+  let currentCursor = 0;
+
   return (
     <div className="whitespace-pre-wrap">
-      {sentenceArray.map((sentenceElement, index) => {
-        return blanks.includes(index) ? (
-          <span key={index}>
-            {index !== 0 && <span> </span>}
-            <Blank
-              sentenceElement={sentenceElement}
-              checkAnswer={checkAnswer}
-              reset={reset}
-            />
-          </span>
-        ) : (
-          <span key={index}>
-            <span> </span>
-            <span>{sentenceElement}</span>
-          </span>
+      {blanks.map((blank) => {
+        const beforeBlank = sentence.slice(currentCursor, blank.start);
+        const answer = sentence.slice(blank.start, blank.end + 1);
+        currentCursor = blank.end + 1;
+        return (
+          <>
+            {beforeBlank && <span>{beforeBlank}</span>}
+            <Blank answer={answer} checkAnswer={checkAnswer} reset={reset} />
+          </>
         );
       })}
+      {currentCursor !== sentence.length && (
+        <span>{sentence.slice(currentCursor)}</span>
+      )}
     </div>
   );
 }
 
 function Blank({
-  sentenceElement,
+  answer,
   checkAnswer,
   reset,
 }: {
-  sentenceElement: string;
+  answer: string;
   checkAnswer: boolean;
   reset: boolean;
 }) {
@@ -51,19 +50,19 @@ function Blank({
     }
   }, [reset]);
 
-  const correctAnswer = sentenceElement
+  const correctAnswer = answer
     .toLowerCase()
     .split("|")
     .includes(userAnswer.toLowerCase());
 
   if (checkAnswer) {
     if (correctAnswer) {
-      return <span className="text-green-500">{sentenceElement}</span>;
+      return <span className="text-green-500">{answer}</span>;
     } else {
       return (
         <>
           <span className="text-red-500 line-through">{userAnswer}</span>
-          <span className="text-red-500"> {sentenceElement}</span>
+          <span className="text-red-500"> {answer}</span>
         </>
       );
     }
@@ -71,7 +70,7 @@ function Blank({
     return (
       <input
         className="border-b text-center dark:bg-neutral-800"
-        size={sentenceElement.length}
+        size={answer.length}
         value={userAnswer}
         onChange={(e) => {
           setUserAnswer(e.target.value);
