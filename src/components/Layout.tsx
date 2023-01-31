@@ -29,7 +29,7 @@ export default function Layout({
 
   return (
     <div
-      className={`[APP] flex h-full min-h-full w-full flex-col overflow-hidden text-gray-700 dark:bg-neutral-800 dark:text-gray-200`}
+      className={`[APP] flex h-full w-full flex-col overflow-hidden text-gray-700 dark:bg-neutral-800 dark:text-gray-200`}
     >
       <div className="[TOP-BAR-CONTAINER] flex w-full justify-center border-b dark:border-neutral-700">
         <div className="[TOP-BAR] flex max-w-screen-2xl flex-grow items-center justify-between p-2">
@@ -73,10 +73,12 @@ export default function Layout({
         </div>
       </div>
       <div
-        className={`[CONTENT-CONTAINER] w-full flex-grow overflow-hidden overflow-y-auto`}
+        className={`[CONTENT-CONTAINER] w-full grow overflow-hidden overflow-y-auto`}
       >
-        <div className="[CONTENT] m-auto flex h-full max-w-screen-2xl flex-grow">
-          <main className="[CONTENT-MAIN] h-full flex-grow">{children}</main>
+        <div className="[CONTENT] m-auto flex h-full w-full max-w-screen-2xl overflow-hidden">
+          <main className="[CONTENT-MAIN] w-full overflow-hidden">
+            {children}
+          </main>
         </div>
       </div>
       <nav className="[BOTTOM-BAR-CONTAINER] w-full border-t dark:border-neutral-700 dark:bg-neutral-800 lg:hidden">

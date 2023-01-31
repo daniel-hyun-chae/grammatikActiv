@@ -50,15 +50,15 @@ export default function CourseContentCreator() {
       <selectedUnitContext.Provider
         value={{ selectedUnitId, setSelectedUnitId }}
       >
-        <div className="flex h-full">
-          <div className="[SIDEBAR] h-full w-96 overflow-x-auto border-r dark:bg-neutral-800">
+        <div className="flex h-full w-full">
+          <div className="[SIDEBAR] h-full w-96 border-r dark:bg-neutral-800">
             <TableOfContentCreator
               sectionIdList={course.sectionsIdList}
               courseId={courseId}
               sections={course.sections}
             />
           </div>
-          <div className="[CONTENT] grow">
+          <div className="[unit-content-designer-wrapper] h-full w-full overflow-hidden">
             <UnitContentDesigner selectedUnitId={selectedUnitId} />
           </div>
         </div>
