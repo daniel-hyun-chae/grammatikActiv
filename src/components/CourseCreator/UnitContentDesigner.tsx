@@ -1,4 +1,3 @@
-import { LineSegment, TextUnderline } from "phosphor-react";
 import { useState } from "react";
 import { $getRoot, $getSelection } from "lexical";
 import { useEffect } from "react";
@@ -14,8 +13,12 @@ import { LinkNode } from "@lexical/link";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 import ToolbarPlugin from "../EditorPlugins/ToolbarPlugin";
+import BlankPlugin, { BlankNode } from "./../EditorPlugins/BlankNode";
+import TreeViewPlugin from "../EditorPlugins/TreeViewPlugin";
 import ExercisePlugin from "../EditorPlugins/ExercisePlugin";
-
+import { ExerciseTitleNode } from "../EditorPlugins/ExerciseTitleNode";
+import { ExerciseContentNode } from "../EditorPlugins/ExerciseContentNode";
+import { ExerciseContainerNode } from "../EditorPlugins/ExercisePlugin";
 // type CustomElement = { type: "paragraph"; children: CustomText[] };
 // type CustomText = { text: string };
 
@@ -137,7 +140,13 @@ function ContentDesigner() {
     namespace: "ContentDesigner",
     theme,
     onError,
-    nodes: [LinkNode],
+    nodes: [
+      LinkNode,
+      ExerciseContainerNode,
+      ExerciseContentNode,
+      ExerciseTitleNode,
+      BlankNode,
+    ],
   };
 
   return (
@@ -145,7 +154,7 @@ function ContentDesigner() {
       <ToolbarPlugin />
       <RichTextPlugin
         contentEditable={
-          <ContentEditable className="[ContentEditable] h-full w-full" />
+          <ContentEditable className="[ContentEditable] w-full px-5 py-2" />
         }
         placeholder={null}
         ErrorBoundary={LexicalErrorBoundary}
@@ -155,6 +164,8 @@ function ContentDesigner() {
       <HistoryPlugin />
       <MyCustomAutoFocusPlugin />
       <LinkPlugin />
+      <BlankPlugin />
+      <TreeViewPlugin />
     </LexicalComposer>
   );
 }
