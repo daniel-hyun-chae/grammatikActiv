@@ -152,7 +152,6 @@ export default function ToolbarPlugin() {
           size={20}
           className="group-disabled:text-neutral-400"
           onClick={() => {
-            console.log("clicked");
             activeEditor.dispatchCommand(INSERT_EXERCISE_COMMAND, undefined);
           }}
         />
@@ -163,7 +162,7 @@ export default function ToolbarPlugin() {
           activeEditor.dispatchCommand(TOGGLE_BLANK_COMMAND, undefined);
         }}
       >
-        test
+        Blank
       </Toolbar.Button>
     </Toolbar.Root>
   );
